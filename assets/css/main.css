@@ -2,16 +2,16 @@
 
 /* CSS Variables */
 :root {
-  /* Colors */
-  --primary: #ff6b35;
-  --secondary: #00a8e8;
-  --accent: #00e8a8;
-  --dark: #0a0a0a;
-  --dark-alt: #1a1a1a;
-  --darker: #141414;
-  --light: #ffffff;
-  --gray: #666666;
-  --gray-light: #cccccc;
+  /* Teal and Gray Color Scheme */
+  --primary: #14b8a6; /* Teal-500 */
+  --secondary: #0f766e; /* Teal-700 */
+  --accent: #5eead4; /* Teal-300 */
+  --dark: #111827; /* Gray-900 */
+  --dark-alt: #1f2937; /* Gray-800 */
+  --darker: #374151; /* Gray-700 */
+  --light: #f9fafb; /* Gray-50 */
+  --gray: #6b7280; /* Gray-500 */
+  --gray-light: #d1d5db; /* Gray-300 */
 
   /* Typography */
   --font-primary: "Inter", Arial, sans-serif;
@@ -117,7 +117,7 @@ a:hover {
 
 /* Hero Section */
 .hero-section {
-  min-height: 100vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,7 +129,7 @@ a:hover {
     var(--darker) 100%
   );
   position: relative;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-md);
 }
 
 .hero-section::before {
@@ -141,12 +141,12 @@ a:hover {
   bottom: 0;
   background: radial-gradient(
       circle at 30% 20%,
-      rgba(255, 107, 53, 0.1) 0%,
+      rgba(20, 184, 166, 0.1) 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 70% 80%,
-      rgba(0, 168, 232, 0.1) 0%,
+      rgba(94, 234, 212, 0.1) 0%,
       transparent 50%
     );
   pointer-events: none;
@@ -247,7 +247,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: var(--transition-normal);
-  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.3);
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -255,7 +255,7 @@ a:hover {
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 12px 40px rgba(20, 184, 166, 0.4);
   background: linear-gradient(135deg, var(--secondary), var(--primary));
   color: var(--light) !important;
 }
@@ -290,6 +290,7 @@ section {
 /* Services Section */
 .services-section {
   background: var(--dark-alt);
+  padding-top: var(--spacing-xl);
 }
 
 .services-grid {
@@ -309,7 +310,7 @@ section {
 
 .service-card:hover {
   transform: translateY(-8px);
-  border-color: var(--primary);
+  border-color: var(--accent);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -381,7 +382,7 @@ section {
 
 .team-member:hover {
   transform: translateY(-8px);
-  border-color: var(--primary);
+  border-color: var(--accent);
 }
 
 .member-info h3 {
@@ -424,7 +425,7 @@ section {
   align-items: center;
   gap: var(--spacing-xs);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: rgba(255, 107, 53, 0.1);
+  background: rgba(20, 184, 166, 0.1);
   border: 1px solid var(--primary);
   border-radius: var(--border-radius);
   color: var(--primary) !important;
@@ -577,6 +578,10 @@ section {
     --spacing-lg: 1.5rem;
   }
 
+  .hero-section {
+    min-height: 80vh;
+  }
+
   .company-name {
     font-size: 2.5rem;
   }
@@ -614,11 +619,17 @@ section {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
   }
+
+  .services-section {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+  }
 }
 
 @media (max-width: 480px) {
   .hero-section {
-    padding: var(--spacing-md);
+    min-height: 75vh;
+    padding: var(--spacing-md) var(--spacing-sm);
   }
 
   .container {
@@ -633,6 +644,11 @@ section {
     font-size: 1.5rem;
   }
 
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+  }
+
   .cta-button {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: 1rem;
@@ -641,6 +657,11 @@ section {
   .service-card,
   .team-member {
     padding: var(--spacing-md);
+  }
+
+  /* Ensure sections don't overlap */
+  .services-section {
+    margin-top: var(--spacing-md);
   }
 }
 
