@@ -54,17 +54,24 @@
 
     // Number animation function
     function animateNumber(element) {
-      const target = parseInt(element.textContent.replace(/[^\d]/g, ""));
+      const originalText = element.textContent;
+
+      // Skip animation for text that contains "/" (like "24/7")
+      if (originalText.includes("/")) {
+        return;
+      }
+
+      const target = parseInt(originalText.replace(/[^\d]/g, ""));
       const increment = target / 50;
       let current = 0;
 
       const timer = setInterval(function () {
         current += increment;
         if (current >= target) {
-          element.textContent = element.textContent.replace(/\d+/, target);
+          element.textContent = originalText.replace(/\d+/, target);
           clearInterval(timer);
         } else {
-          element.textContent = element.textContent.replace(
+          element.textContent = originalText.replace(
             /\d+/,
             Math.floor(current)
           );
