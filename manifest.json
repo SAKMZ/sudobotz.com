@@ -1,0 +1,81 @@
+{
+  "name": "SudoBotz - Elite Automation & AI Solutions",
+  "short_name": "SudoBotz",
+  "description": "Transform your business with intelligent automation, web scraping, and custom bot development.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#FF6B35",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["business", "productivity", "developer"],
+  "icons": [
+    {
+      "src": "images/SB_Icon_Small.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "images/SB_Icon_Small.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/banner.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "SudoBotz Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hire on Fiverr",
+      "short_name": "Hire Us",
+      "description": "Start your project on Fiverr",
+      "url": "https://www.fiverr.com/saifalimz",
+      "icons": [
+        {
+          "src": "images/SB_Icon_Small.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "short_name": "Services",
+      "description": "View our automation services",
+      "url": "/#services",
+      "icons": [
+        {
+          "src": "images/SB_Icon_Small.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Portfolio",
+      "short_name": "Portfolio",
+      "description": "Check our project portfolio",
+      "url": "/#portfolio",
+      "icons": [
+        {
+          "src": "images/SB_Icon_Small.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://www.fiverr.com/saifalimz"
+    }
+  ]
+}
