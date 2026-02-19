@@ -6,8 +6,8 @@
   --primary-dim: rgba(0, 255, 148, 0.1);
   --secondary: #00cc76;
   /* Darker Green */
-  --accent: #5eead4;
-  /* Teal-300 (Kept for compatibility) */
+  --accent: #00ff94;
+  /* Re-mapped to Primary for consistency */
   --dark: #050505;
   /* Deep Black */
   --dark-alt: #0a0a0a;
@@ -80,12 +80,55 @@ body.is-preload * {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 30px var(--spacing-md);
-  z-index: 10;
+  padding: 20px var(--spacing-md);
+  z-index: 100;
+}
+
+.nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-link {
+  color: var(--gray-light);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary-dim);
+}
+
+.nav-cta {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.nav-cta:hover {
+  background: var(--primary);
+  color: var(--dark-er) !important;
+  box-shadow: 0 0 15px var(--primary-dim);
+  text-shadow: none;
 }
 
 .logo-container {
@@ -750,7 +793,7 @@ section {
 .service-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -788,7 +831,7 @@ section {
   content: "✓";
   position: absolute;
   left: 0;
-  color: var(--accent);
+  color: var(--primary);
   font-weight: bold;
 }
 
@@ -1020,7 +1063,7 @@ section {
   }
 
   .company-name .letter {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1081,7 +1124,7 @@ section {
   }
 
   .company-name .letter {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
