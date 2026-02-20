@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>Building Autonomous AI Agents for Data Extraction | SudoBotz</title>
+    <title>Scaling Playwright: Architecture for Extracting Millions of Pages | SudoBotz</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="description"
-        content="The future of web scraping is autonomous. Learn how SudoBotz builds self-healing AI agents using LangChain, LLMs, and vector databases." />
+        content="Learn the backend architecture required to scale Python Playwright scripts to scrape millions of pages daily using Celery, Redis, and Kubernetes." />
     <meta name="keywords"
-        content="ai agents, web scraping ai, langchain, autonomous agents, llm data extraction, self-healing scrapers" />
+        content="scale playwright, python multiprocessing scraping, high volume web scraping, celery, redis architecture" />
     <link rel="icon" type="image/png" href="../images/SB_Icon_Small.png" />
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +17,6 @@
         href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
     <style>
-        /* Blog Specific Styles */
         .blog-post {
             padding-top: 120px;
             color: var(--light);
@@ -41,14 +40,21 @@
             color: var(--gray-light);
         }
 
-        .article-content ul {
-            margin-bottom: 1.5rem;
-            padding-left: 20px;
-            color: var(--gray-light);
+        .article-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            color: var(--accent);
         }
 
-        .article-content li {
-            margin-bottom: 0.5rem;
+        .article-content pre {
+            background: #111;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            border: 1px solid #333;
         }
 
         .article-meta {
@@ -58,17 +64,6 @@
             margin-bottom: 2rem;
             border-bottom: 1px solid #333;
             padding-bottom: 1rem;
-        }
-
-        .diagram {
-            border: 1px solid #333;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 2rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            text-align: center;
-            font-family: var(--font-mono);
-            color: var(--accent);
         }
     </style>
 </head>
@@ -94,49 +89,63 @@
     <article class="blog-post">
         <div class="container">
             <div class="article-content">
-                <h1 class="hero-title" style="font-size: 3rem;">Building Autonomous AI Agents for Data Extraction</h1>
+                <h1 class="hero-title" style="font-size: 3rem;">Scaling Playwright: Architecture for Extracting Millions
+                    of Pages</h1>
                 <div class="article-meta">
-                    <span>By SudoBotz Team</span> &middot; <span>Feb 15, 2026</span> &middot; <span>10 min read</span>
+                    <span>By Saif Ali</span> &middot; <span>Feb 16, 2026</span> &middot; <span>9 min read</span>
                 </div>
 
-                <p>Traditional scrapers are brittle. A single CSS class change can break an entire pipeline. The
-                    solution isn't better selectors—it's <strong>Autonomous AI Agents</strong>.</p>
-                <p>At SudoBotz, we are pioneering the use of LLMs (Large Language Models) to create "self-healing"
-                    scrapers that understand web pages semantically, just like a human does.</p>
-
-                <h2>The Architecture of an AI Scraper</h2>
-                <div class="diagram">
-                    [ HTML Source ] --(parse)--> [ Cleaned DOM ] --(prompt)--> [ LLM Agent ] --(action)--> [ Playwright
-                    ]
-                </div>
-                <p>Instead of hardcoding <code>div.product-price</code>, we feed a simplified version of the DOM to an
-                    LLM with a prompt: <em>"Find the price of the product on this page."</em> The LLM analyzes the
-                    structure and returns the correct element, regardless of class obfuscation.</p>
-
-                <h2>Why Agents Win</h2>
-                <ul>
-                    <li><strong>Resilience:</strong> Agents adapt to layout changes automatically.</li>
-                    <li><strong>Context Awareness:</strong> They can navigate pagination, handle popups, and solve logic
-                        puzzles.</li>
-                    <li><strong>Zero-Shot Extraction:</strong> Extract data from new websites without writing custom
-                        code for each one.</li>
-                </ul>
-
-                <h2>Our Tech Stack</h2>
-                <p>We use <strong>LangChain</strong> to orchestrate agent workflows and <strong>Vector
-                        Databases</strong> (like Pinecone) to give our agents long-term memory of site structures. This
-                    allows our bots to learn from past failures and improve over time.</p>
-
-                <h2>Case Study: E-Commerce Monitoring</h2>
-                <p>We deployed an autonomous agent to monitor pricing across 50 different retailer sites. When 12 of
-                    them updated their layouts simultaneously during a holiday sale, traditional scrapers failed. Our AI
-                    agents continued collecting data with <strong>99.8% accuracy</strong> without a single code change.
+                <p>Writing a Playwright script to scrape 10 pages is easy. Architecting a system to scrape 10 million
+                    pages daily without crashing your servers or getting permanent IP bans is an engineering challenge.
                 </p>
+                <p>This post outlines the SudoBotz reference architecture for high-volume, headless browser scraping.
+                </p>
+
+                <h2>1. The Problem with Memory Leaks</h2>
+                <p>Headless browsers (Chromium, Firefox) are resource hogs. If you use a single long-running browser
+                    instance and constantly open/close <code>BrowserContexts</code>, memory fragmentation will
+                    eventually OOM (Out of Memory) your worker nodes.</p>
+                <p><strong>Solution:</strong> We enforce a strict TTL (Time-To-Live) on browser instances. After a
+                    worker processes 50 URLs, we completely kill the browser process and spin up a fresh one.</p>
+
+                <h2>2. Distributed Message Queues</h2>
+                <p>You cannot run this workload synchronously. We utilize <strong>Celery with RabbitMQ</strong> or
+                    <strong>Redis</strong> as a message broker.
+                </p>
+                <pre><code>from celery import Celery
+
+app = Celery('scraper', broker='redis://localhost:6379/0')
+
+@app.task(bind=True, max_retries=3)
+def scrape_url_task(self, url):
+    try:
+        # Spin up Playwright, scrape URL, save to Data Lake
+        process_url(url)
+    except Exception as e:
+        self.retry(exc=e, countdown=60)</code></pre>
+
+                <h2>3. Browser Context Pooling</h2>
+                <p>Launching a cold browser takes roughly 500ms-1s. To optimize throughput, we use a custom Context
+                    Pool. We maintain a warm pool of <code>BrowserContexts</code> ready to accept new pages,
+                    significantly reducing the overhead per scrape.</p>
+
+                <h2>4. Smart Network Interception</h2>
+                <p>When rendering a modern SPA, tracking scripts, fonts, and large images consume 80% of bandwidth and
+                    execution time. By routing request handling through Playwright's <code>route</code> listener, we
+                    abort non-essential resources.</p>
+                <pre><code>asyn def handle_route(route):
+    if route.request.resource_type in ["image", "media", "font", "stylesheet"]:
+        await route.abort()
+    else:
+        await route.continue_()
+
+page.route("**/*", handle_route)</code></pre>
 
                 <div
                     style="margin-top: 4rem; padding: 2rem; background: rgba(0,255,148,0.05); border: 1px solid var(--primary); border-radius: 12px; text-align: center;">
-                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Ready for the AI Revolution?</h3>
-                    <p>Deploy intelligent agents that work 24/7. Contact us to demo our AI scraping platform.</p>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Hitting Bottlenecks?</h3>
+                    <p>If your current architecture is failing to scale, let our engineers design a clustered solution
+                        tailored for extreme throughput.</p>
                     <div class="cta-group"
                         style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
                         <a href="https://www.fiverr.com/saifalimz" target="_blank" class="cta-button">
@@ -173,7 +182,6 @@
     <script src="../assets/js/breakpoints.min.js"></script>
     <script src="../assets/js/util.js"></script>
     <script src="../assets/js/main.js"></script>
-    <link rel="stylesheet" href="../assets/css/fontawesome-all.min.css" />
 </body>
 
 </html>
